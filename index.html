@@ -1,11 +1,5 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IX 13 Partners — Complaint Ratio (Outages Excluded), Pre/Post/Now</title>
-<style>*{box-sizing:border-box}body{margin:0}</style>
-</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>IX 13 Partners — Complaint Ratio (Outages Excluded), Pre/Post/Now</title><style>*{box-sizing:border-box}body{margin:0}</style></head>
 <body>
 
 <style>
@@ -52,7 +46,7 @@
 
 <div class="viz-root">
   <h1>IX 13 Partners — Complaint Ratio, <span style="color:var(--warn)">Outages Excluded</span></h1>
-  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>18.7% of complaints removed as outage-driven. Lower is better.</strong> Pre = Nov–Dec · Post = Jan–Feb (post-upgrade) · Now = May–Jun.</p>
+  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>18.7% of complaints removed as outage-driven. Lower is better.</strong> Pre = Nov–Dec · Post = Jan–Feb (post-upgrade) · Now = May–Jun.</p>
 
   <div class="tiles">
     <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Nov–Dec</div><div class="val">46.4<small>%</small></div><div class="foot">pre-upgrade baseline</div></div>
@@ -85,7 +79,7 @@
     </table></div>
   </div>
 
-  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08.</p>
+  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. <strong>Tiny outages (≤3 devices down) are NOT excluded</strong> — only mass outages (&gt;3 devices) count, so complaints during small 1–3 device blips stay in the ratio. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08.</p>
 </div>
 
 <script>
@@ -117,5 +111,4 @@ const aPre=CSP.reduce((s,r)=>s+r[2]*r[1],0)/aU,aPost=CSP.reduce((s,r)=>s+r[3]*r[
 cb.insertAdjacentHTML("beforeend",`<tr style="border-top:2px solid var(--baseline);font-weight:700;background:color-mix(in srgb,var(--line) 6%,transparent)"><td>Overall (userbase-weighted)</td><td style="color:var(--muted)">${aU}</td><td>${aPre.toFixed(2)}</td><td>${aPost.toFixed(2)}</td><td>${aNow.toFixed(2)}</td><td style="color:${aDl<0?'var(--good)':'var(--bad)'}">${aDl>0?'+':''}${aDl.toFixed(2)}</td></tr>`);
 </script>
 
-</body>
-</html>
+</body></html>
