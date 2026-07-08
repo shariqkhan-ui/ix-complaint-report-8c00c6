@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IX 13 Partners — Complaint Ratio (Outages Excluded), Pre/Post/Now</title>
+<style>*{box-sizing:border-box}body{margin:0}</style>
+</head>
+<body>
+
+<style>
+  .viz-root{
+    --surface-1:#fcfcfb; --plane:#f9f9f7; --text-primary:#0b0b0b; --text-secondary:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --line:#2a78d6; --good:#006300; --bad:#b42318; --warn:#c8630e; --hdr:#1f2733; --hdr-ink:#eef1f5;
+    --pre:#eae6f7; --post:#e2eefb; --now:#dcefe0;
+    --cell-good-bg:#d8f0dd; --cell-good-ink:#0d6b2a; --cell-bad-bg:#fbdedd; --cell-bad-ink:#b42318;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--text-primary);
+    background:var(--plane); max-width:980px; margin:0 auto; padding:28px 20px 48px;
+  }
+  @media (prefers-color-scheme: dark){ .viz-root{ --surface-1:#1a1a19; --plane:#0d0d0d; --text-primary:#fff; --text-secondary:#c3c2b7; --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10); --line:#3987e5; --good:#0ca30c; --warn:#e0913f; --hdr:#0f1620; --pre:#241f38; --post:#132a44; --now:#123020; --cell-good-bg:#123020; --cell-good-ink:#5fd08a; --cell-bad-bg:#3a1616; --cell-bad-ink:#f0918c; } }
+  :root[data-theme="dark"] .viz-root{ --surface-1:#1a1a19; --plane:#0d0d0d; --text-primary:#fff; --text-secondary:#c3c2b7; --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10); --line:#3987e5; --good:#0ca30c; --warn:#e0913f; --hdr:#0f1620; --pre:#241f38; --post:#132a44; --now:#123020; --cell-good-bg:#123020; --cell-good-ink:#5fd08a; --cell-bad-bg:#3a1616; --cell-bad-ink:#f0918c; }
+  :root[data-theme="light"] .viz-root{ --surface-1:#fcfcfb; --plane:#f9f9f7; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10); --line:#2a78d6; --good:#006300; --warn:#c8630e; --hdr:#1f2733; --pre:#eae6f7; --post:#e2eefb; --now:#dcefe0; --cell-good-bg:#d8f0dd; --cell-good-ink:#0d6b2a; --cell-bad-bg:#fbdedd; --cell-bad-ink:#b42318; }
+  h1{ font-size:22px; margin:0 0 4px; letter-spacing:-0.01em; }
+  .sub{ color:var(--text-secondary); font-size:13px; margin:0 0 20px; line-height:1.5; }
+  .tiles{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .tile{ background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:13px 15px; }
+  .tile .lab{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+  .tile .val{ font-size:24px; font-weight:650; margin-top:4px; letter-spacing:-0.02em; }
+  .tile .val small{ font-size:13px; font-weight:500; color:var(--text-secondary); }
+  .tile .foot{ font-size:11.5px; margin-top:3px; color:var(--text-secondary); }
+  .good{ color:var(--good); font-weight:600; }
+  .card{ background:var(--surface-1); border:1px solid var(--border); border-radius:14px; padding:18px 18px 10px; margin-bottom:20px; }
+  .ctitle{ font-size:14px; font-weight:650; margin:0 0 2px; }
+  .cnote{ font-size:11.5px; color:var(--muted); margin:0 0 8px; line-height:1.5; }
+  svg{ display:block; width:100%; height:auto; overflow:visible; }
+  .gl{ stroke:var(--grid); stroke-width:1; } .base{ stroke:var(--baseline); stroke-width:1; }
+  .tick{ fill:var(--muted); font-size:11px; font-variant-numeric:tabular-nums; }
+  .plab{ font-size:10.5px; font-variant-numeric:tabular-nums; font-weight:700; }
+  .band{ font-size:11px; font-weight:700; }
+  .dot{ stroke:var(--surface-1); stroke-width:2; }
+  table{ border-collapse:separate; border-spacing:0; width:100%; font-size:12.5px; font-variant-numeric:tabular-nums; border-radius:10px; overflow:hidden; }
+  thead th{ background:var(--hdr); color:var(--hdr-ink); font-weight:600; font-size:11px; padding:8px 10px; text-align:right; }
+  thead th:first-child{ text-align:left; }
+  tbody td{ padding:6px 10px; text-align:right; border-bottom:1px solid var(--grid); }
+  tbody td:first-child{ text-align:left; }
+  tbody td.now{ font-weight:700; }
+  .now.up{ background:var(--cell-good-bg); color:var(--cell-good-ink); border-radius:5px; }
+  .now.dn{ background:var(--cell-bad-bg); color:var(--cell-bad-ink); border-radius:5px; }
+  .note{ font-size:11.5px; color:var(--muted); line-height:1.6; margin-top:14px; }
+</style>
+
+<div class="viz-root">
+  <h1>IX 13 Partners — Complaint Ratio, <span style="color:var(--warn)">Outages Excluded</span></h1>
+  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>18.7% of complaints removed as outage-driven. Lower is better.</strong> Pre = Nov–Dec · Post = Jan–Feb (post-upgrade) · Now = May–Jun.</p>
+
+  <div class="tiles">
+    <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Nov–Dec</div><div class="val">46.4<small>%</small></div><div class="foot">pre-upgrade baseline</div></div>
+    <div class="tile" style="border-left:3px solid var(--line)"><div class="lab">Post — Jan–Feb</div><div class="val">25.8<small>%</small></div><div class="foot good">▼ 44% vs Pre</div></div>
+    <div class="tile" style="border-left:3px solid var(--good)"><div class="lab">Now — May–Jun</div><div class="val" style="color:var(--good)">24.4<small>%</small></div><div class="foot good">▼ 47% vs Pre</div></div>
+    <div class="tile"><div class="lab">Trend</div><div class="val good">▼ improving</div><div class="foot">Pre → Post → Now</div></div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--warn)">
+    <p class="ctitle">Commentary — how far can the complaint ratio fall?</p>
+    <div style="font-size:12.8px;line-height:1.65;color:var(--text-primary)">
+      <p style="margin:6px 0"><strong>1 · How much an intervention buys.</strong> The upgrade cut the non-outage complaint ratio <strong>~44%</strong> — from <strong>46.4%</strong> (pre) to <strong>25.8%</strong> (immediately post) — and almost all of it landed in the first two months. From there it plateaued (→ 24.4% now). <em>A single intervention delivers a big one-time step-change, then flattens.</em></p>
+      <p style="margin:6px 0"><strong>2 · The idealistic floor.</strong> It never reaches zero — a live network always throws off some genuine complaints — but it can fall far below today's 24%. The strongest CSP here runs at <strong>~6%</strong> (K.H.), and several sit in the low-to-mid teens. The direction to aim for is <strong>single digits</strong>; 24% still carries heavy, fixable excess. (Absolute target to be set by ops, not by the current best.)</p>
+      <p style="margin:6px 0"><strong>3 · What it holds.</strong> The plateau + earlier mean-reversion signal say the residual gap closes only with <strong>recurring maintenance</strong> (the ratio drifts back up ~2–3 months after a fix), not one-off upgrades. Biggest lever = the laggards — <strong>Gaurav 43%, MD 36%, Nextia 31%</strong> run 2–3× the best CSPs; pulling them down moves the average most. Runway so far: <strong>46% → 24% (−44%, banked)</strong>; the next leg toward single digits is a maintenance-discipline problem, not a capital one.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="ctitle">Complaint ratio — monthly, Nov 2025 → Jun 2026</p>
+    <p class="cnote">y = complaint ratio %. Lower = better. Upgrade lands in Jan (Post) — the level steps down and keeps declining.</p>
+    <svg id="chart" viewBox="0 0 960 400" role="img" aria-label="Monthly complaint ratio Nov to Jun"></svg>
+  </div>
+
+  <div class="card">
+    <p class="ctitle">CSP-wise — Complaint Ratio %, Pre / Post / Now</p>
+    <p class="cnote">Now coloured green = lower (better) than Pre, red = higher. Δ = Now − Pre. Sorted by biggest drop. Small userbases ⇒ noisy.</p>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>Partner</th><th>Users</th><th>Pre · Nov–Dec</th><th>Post · Jan–Feb</th><th>Now · May–Jun</th><th>Δ pp</th></tr></thead>
+      <tbody id="csptbody"></tbody>
+    </table></div>
+  </div>
+
+  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08.</p>
+</div>
+
+<script>
+const M=[["Nov",48.54],["Dec",44.30],["Jan",32.96],["Feb",18.63],["Mar",23.11],["Apr",27.59],["May",28.11],["Jun",20.66]];
+const BANDS=[["Pre",0,1,"#8b7fc7"],["Post",2,3,"var(--line)"],["Now",6,7,"var(--good)"]];
+const CSP=[["K.H. Broadband",44,280.99,46.07,5.68],["Durga cable network",56,66.38,38.56,17.86],["Aman Broadband Services",105,67.37,42.49,22.38],["Ajay Broadband",88,64.26,24.29,19.32],["Sameer Alam",183,58.1,41.52,15.57],["Speed Broadband",106,36.42,24.98,20.75],["Tapish Broadband (Badli)",94,36.64,37.62,21.28],["Gaurav Cable Network",171,54.64,22.34,42.69],["MD Technologys",334,43.81,26.65,35.93],["THREE STAR VISION",90,24.31,16.03,21.11],["Akshay Communications",74,16.89,15.54,14.19],["Pulse Internet Services",285,13.97,9.43,15.96],["Nextia Solutions",88,18.26,19.8,31.25]];
+
+const W=960,H=400,L=44,T=40,B=46,R=20,iw=W-L-R,ih=H-T-B,yMax=55;
+const NS="http://www.w3.org/2000/svg",el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const svg=document.getElementById("chart"),x=i=>L+iw*i/(M.length-1),y=v=>T+ih*(1-v/yMax);
+// period bands
+BANDS.forEach(([lab,a,b,c])=>{const x0=x(a)-iw/(M.length-1)/2, x1=x(b)+iw/(M.length-1)/2;
+  svg.appendChild(el("rect",{x:x0,y:T,width:x1-x0,height:ih,fill:c,opacity:0.10}));
+  const t=el("text",{x:(x0+x1)/2,y:T-12,"text-anchor":"middle",class:"band"});t.setAttribute("fill",c);t.textContent=lab;svg.appendChild(t);});
+for(let v=0;v<=yMax;v+=10){svg.appendChild(el("line",{x1:L,x2:W-R,y1:y(v),y2:y(v),class:"gl"}));const t=el("text",{x:L-7,y:y(v)+3,"text-anchor":"end",class:"tick"});t.textContent=v;svg.appendChild(t);}
+const bt=el("text",{x:L-7,y:y(0)+18,"text-anchor":"end",class:"tick"});bt.textContent="better ↓";bt.setAttribute("fill","var(--good)");svg.appendChild(bt);
+M.forEach((d,i)=>{const t=el("text",{x:x(i),y:H-B+20,"text-anchor":"middle",class:"tick"});t.textContent=d[0];svg.appendChild(t);});
+svg.appendChild(el("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"base"}));
+const pts=M.map((d,i)=>[x(i),y(d[1])]);
+svg.appendChild(el("path",{d:pts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:"var(--line)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
+M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:4.5,fill:"var(--line)",class:"dot"}));const lab=el("text",{x:x(i),y:y(d[1])-11,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--line)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
+
+const cb=document.getElementById("csptbody");
+CSP.sort((a,b)=>(a[4]-a[2])-(b[4]-b[2]));
+CSP.forEach(r=>{const [n,u,pr,po,nw]=r;const dl=+(nw-pr).toFixed(2);const cls=nw<pr-0.05?"up":(nw>pr+0.05?"dn":"");
+  cb.insertAdjacentHTML("beforeend",`<tr><td>${n}</td><td style="color:var(--muted)">${u}</td><td>${pr.toFixed(2)}</td><td>${po.toFixed(2)}</td><td class="now ${cls}">${nw.toFixed(2)}</td><td style="color:${dl<0?'var(--good)':'var(--bad)'};font-weight:600">${dl>0?'+':''}${dl.toFixed(2)}</td></tr>`);});
+const aU=CSP.reduce((s,r)=>s+r[1],0);
+const aPre=CSP.reduce((s,r)=>s+r[2]*r[1],0)/aU,aPost=CSP.reduce((s,r)=>s+r[3]*r[1],0)/aU,aNow=CSP.reduce((s,r)=>s+r[4]*r[1],0)/aU,aDl=aNow-aPre;
+cb.insertAdjacentHTML("beforeend",`<tr style="border-top:2px solid var(--baseline);font-weight:700;background:color-mix(in srgb,var(--line) 6%,transparent)"><td>Overall (userbase-weighted)</td><td style="color:var(--muted)">${aU}</td><td>${aPre.toFixed(2)}</td><td>${aPost.toFixed(2)}</td><td>${aNow.toFixed(2)}</td><td style="color:${aDl<0?'var(--good)':'var(--bad)'}">${aDl>0?'+':''}${aDl.toFixed(2)}</td></tr>`);
+</script>
+
+</body>
+</html>
