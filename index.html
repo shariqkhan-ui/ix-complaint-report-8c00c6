@@ -79,6 +79,33 @@
     </table></div>
   </div>
 
+  <div class="card">
+    <p class="ctitle">Cohorts — Supportive vs Non-supportive (Post · Jan–Feb)</p>
+    <p class="cnote">Complaint ratio %, outages excluded. Cohort labels per ops; Gaurav &amp; Tapish unassigned.</p>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>CSP</th><th style="text-align:left">Cohort</th><th>Users</th><th>Post %</th></tr></thead>
+      <tbody>
+        <tr><td>Pulse</td><td style="text-align:left;color:var(--good);font-weight:600">Supportive</td><td style="color:var(--muted)">285</td><td>9.4</td></tr>
+        <tr><td>Akshay</td><td style="text-align:left;color:var(--good);font-weight:600">Supportive</td><td style="color:var(--muted)">74</td><td>15.5</td></tr>
+        <tr><td>Nextia</td><td style="text-align:left;color:var(--good);font-weight:600">Supportive</td><td style="color:var(--muted)">88</td><td>19.8</td></tr>
+        <tr><td>Ajay</td><td style="text-align:left;color:var(--good);font-weight:600">Supportive</td><td style="color:var(--muted)">88</td><td>24.3</td></tr>
+        <tr><td>Speed</td><td style="text-align:left;color:var(--good);font-weight:600">Supportive</td><td style="color:var(--muted)">106</td><td>25.0</td></tr>
+        <tr><td>MD Technologys</td><td style="text-align:left;color:var(--good);font-weight:600">Supportive</td><td style="color:var(--muted)">334</td><td>26.6</td></tr>
+        <tr><td>THREE STAR VISION</td><td style="text-align:left;color:var(--bad);font-weight:600">Non-supportive</td><td style="color:var(--muted)">90</td><td>16.0</td></tr>
+        <tr><td>Durga</td><td style="text-align:left;color:var(--bad);font-weight:600">Non-supportive</td><td style="color:var(--muted)">56</td><td>38.6</td></tr>
+        <tr><td>Sameer Alam</td><td style="text-align:left;color:var(--bad);font-weight:600">Non-supportive</td><td style="color:var(--muted)">183</td><td>41.5</td></tr>
+        <tr><td>Aman</td><td style="text-align:left;color:var(--bad);font-weight:600">Non-supportive</td><td style="color:var(--muted)">105</td><td>42.5</td></tr>
+        <tr><td>K.H. Broadband</td><td style="text-align:left;color:var(--bad);font-weight:600">Non-supportive</td><td style="color:var(--muted)">44</td><td>46.1</td></tr>
+        <tr><td>Gaurav</td><td style="text-align:left;color:var(--muted)">— unassigned</td><td style="color:var(--muted)">171</td><td>22.3</td></tr>
+        <tr><td>Tapish</td><td style="text-align:left;color:var(--muted)">— unassigned</td><td style="color:var(--muted)">94</td><td>37.6</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tiles" style="grid-template-columns:repeat(2,1fr);margin-top:14px">
+      <div class="tile" style="border-left:3px solid var(--good)"><div class="lab" style="color:var(--good)">Supportive · 6 CSPs · 975 users</div><div class="val">20.1<small>% avg</small></div><div class="foot">userbase-weighted 19.8% · P50 22.0%</div></div>
+      <div class="tile" style="border-left:3px solid var(--bad)"><div class="lab" style="color:var(--bad)">Non-supportive · 5 CSPs · 478 users</div><div class="val" style="color:var(--bad)">36.9<small>% avg</small></div><div class="foot">userbase-weighted 37.0% · P50 41.5%</div></div>
+    </div>
+  </div>
+
   <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. <strong>Tiny outages (≤3 devices down) are NOT excluded</strong> — only mass outages (&gt;3 devices) count, so complaints during small 1–3 device blips stay in the ratio. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08.</p>
 </div>
 
