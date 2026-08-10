@@ -46,35 +46,35 @@
 
 <div class="viz-root">
   <h1>IX 13 Partners — Complaint Ratio, <span style="color:var(--warn)">Outages Excluded</span></h1>
-  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>18.7% of complaints removed as outage-driven. Lower is better.</strong> Pre = Nov–Dec · Post = Jan–Feb (post-upgrade) · Now = May–Jun.</p>
+  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>Outage-driven complaints removed. Lower is better.</strong> Pre = Apr–May · Post = Jan–Feb (earlier wave) · Now = Jun–Jul. <em>Updated 10 Aug 2026 with fresh data through July.</em></p>
 
   <div class="tiles">
-    <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Nov–Dec</div><div class="val">46.4<small>%</small></div><div class="foot">pre-upgrade baseline</div></div>
-    <div class="tile" style="border-left:3px solid var(--line)"><div class="lab">Post — Jan–Feb</div><div class="val">25.8<small>%</small></div><div class="foot good">▼ 44% vs Pre</div></div>
-    <div class="tile" style="border-left:3px solid var(--good)"><div class="lab">Now — May–Jun</div><div class="val" style="color:var(--good)">24.4<small>%</small></div><div class="foot good">▼ 47% vs Pre</div></div>
-    <div class="tile"><div class="lab">Trend</div><div class="val good">▼ improving</div><div class="foot">Pre → Post → Now</div></div>
+    <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Apr–May</div><div class="val">29.2<small>%</small></div><div class="foot">pre-upgrade baseline</div></div>
+    <div class="tile" style="border-left:3px solid var(--good)"><div class="lab">Now — Jun–Jul</div><div class="val" style="color:var(--good)">16.7<small>%</small></div><div class="foot good">▼ 43% vs Pre</div></div>
+    <div class="tile" style="border-left:3px solid var(--line)"><div class="lab">Jul — latest month</div><div class="val">17.1<small>%</small></div><div class="foot">holding after the drop</div></div>
+    <div class="tile"><div class="lab">Trend</div><div class="val good">▼ improving</div><div class="foot">Pre → Now</div></div>
   </div>
 
   <div class="card" style="border-left:3px solid var(--warn)">
     <p class="ctitle">Commentary — how far can the complaint ratio fall?</p>
     <div style="font-size:12.8px;line-height:1.65;color:var(--text-primary)">
-      <p style="margin:6px 0"><strong>1 · How much an intervention buys.</strong> The upgrade cut the non-outage complaint ratio <strong>~44%</strong> — from <strong>46.4%</strong> (pre) to <strong>25.8%</strong> (immediately post) — and almost all of it landed in the first two months. From there it plateaued (→ 24.4% now). <em>A single intervention delivers a big one-time step-change, then flattens.</em></p>
-      <p style="margin:6px 0"><strong>2 · The idealistic floor.</strong> It never reaches zero — a live network always throws off some genuine complaints — but it can fall far below today's 24%. The strongest CSP here runs at <strong>~6%</strong> (K.H.), and several sit in the low-to-mid teens. The direction to aim for is <strong>single digits</strong>; 24% still carries heavy, fixable excess. (Absolute target to be set by ops, not by the current best.)</p>
-      <p style="margin:6px 0"><strong>3 · What it holds.</strong> The plateau + earlier mean-reversion signal say the residual gap closes only with <strong>recurring maintenance</strong> (the ratio drifts back up ~2–3 months after a fix), not one-off upgrades. Biggest lever = the laggards — <strong>Gaurav 43%, MD 36%, Nextia 31%</strong> run 2–3× the best CSPs; pulling them down moves the average most. Runway so far: <strong>46% → 24% (−44%, banked)</strong>; the next leg toward single digits is a maintenance-discipline problem, not a capital one.</p>
+      <p style="margin:6px 0"><strong>1 · How much an intervention buys.</strong> The upgrade cut the non-outage complaint ratio <strong>~43%</strong> — from <strong>29.2%</strong> (Apr–May pre) to <strong>16.7%</strong> (Jun–Jul) — and the drop landed immediately in June. July holds at 17.1%. <em>An intervention delivers a big one-time step-change; holding it is the discipline.</em></p>
+      <p style="margin:6px 0"><strong>2 · The idealistic floor.</strong> It never reaches zero — a live network always throws off some genuine complaints — but it can fall far below today's 17%. The strongest CSPs here run at <strong>~5–8%</strong> (K.H., Sameer Alam, Gaurav). The direction to aim for is <strong>single digits</strong>; 17% still carries fixable excess. (Absolute target to be set by ops, not by the current best.)</p>
+      <p style="margin:6px 0"><strong>3 · What it holds.</strong> Earlier mean-reversion (the Mar–May drift back up after the January wave) says the gap stays closed only with <strong>recurring maintenance</strong>, not one-off upgrades. Biggest lever = the laggards — <strong>MD 24%, Nextia 20%, Speed 20%, THREE STAR 20%</strong> run 3–4× the best CSPs; pulling them down moves the average most. Runway so far: <strong>29% → 17% (−43%, banked)</strong>; the next leg toward single digits is a maintenance-discipline problem, not a capital one.</p>
     </div>
   </div>
 
   <div class="card">
-    <p class="ctitle">Complaint ratio — monthly, Nov 2025 → Jun 2026</p>
-    <p class="cnote">y = complaint ratio %. Lower = better. Upgrade lands in Jan (Post) — the level steps down and keeps declining.</p>
-    <svg id="chart" viewBox="0 0 960 400" role="img" aria-label="Monthly complaint ratio Nov to Jun"></svg>
+    <p class="ctitle">Complaint ratio — monthly, Nov 2025 → Jul 2026</p>
+    <p class="cnote">y = complaint ratio %. Lower = better. Two waves visible: the Jan wave steps the level down, drifts back Mar–May, then the Jun upgrade wave steps it down again — and holds.</p>
+    <svg id="chart" viewBox="0 0 960 400" role="img" aria-label="Monthly complaint ratio Nov to Jul"></svg>
   </div>
 
   <div class="card">
     <p class="ctitle">CSP-wise — Complaint Ratio %, Pre / Post / Now</p>
     <p class="cnote">Now coloured green = lower (better) than Pre, red = higher. Δ = Now − Pre. Sorted by biggest drop. Small userbases ⇒ noisy.</p>
     <div style="overflow-x:auto"><table>
-      <thead><tr><th>Partner</th><th>Users</th><th>Pre · Nov–Dec</th><th>Post · Jan–Feb</th><th>Now · May–Jun</th><th>Δ pp</th></tr></thead>
+      <thead><tr><th>Partner</th><th>Users</th><th>Pre · Apr–May</th><th>Post · Jan–Feb</th><th>Now · Jun–Jul</th><th>Δ pp</th></tr></thead>
       <tbody id="csptbody"></tbody>
     </table></div>
   </div>
@@ -110,9 +110,9 @@
 </div>
 
 <script>
-const M=[["Nov",48.54],["Dec",44.30],["Jan",32.96],["Feb",18.63],["Mar",23.11],["Apr",27.59],["May",28.11],["Jun",20.66]];
-const BANDS=[["Pre",0,1,"#8b7fc7"],["Post",2,3,"var(--line)"],["Now",6,7,"var(--good)"]];
-const CSP=[["K.H. Broadband",44,280.99,46.07,5.68],["Durga cable network",56,66.38,38.56,17.86],["Aman Broadband Services",105,67.37,42.49,22.38],["Ajay Broadband",88,64.26,24.29,19.32],["Sameer Alam",183,58.1,41.52,15.57],["Speed Broadband",106,36.42,24.98,20.75],["Tapish Broadband (Badli)",94,36.64,37.62,21.28],["Gaurav Cable Network",171,54.64,22.34,42.69],["MD Technologys",334,43.81,26.65,35.93],["THREE STAR VISION",90,24.31,16.03,21.11],["Akshay Communications",74,16.89,15.54,14.19],["Pulse Internet Services",285,13.97,9.43,15.96],["Nextia Solutions",88,18.26,19.8,31.25]];
+const M=[["Nov",48.54],["Dec",44.30],["Jan",32.96],["Feb",18.63],["Mar",23.11],["Apr",31.49],["May",27.01],["Jun",16.18],["Jul",17.11]];
+const BANDS=[["Post",2,3,"var(--line)"],["Pre",5,6,"#8b7fc7"],["Now",7,8,"var(--good)"]];
+const CSP=[["K.H. Broadband",44,2.27,46.07,4.55],["Durga cable network",56,29.46,38.56,16.96],["Aman Broadband Services",105,27.62,42.49,18.10],["Ajay Broadband",88,32.95,24.29,18.75],["Sameer Alam",183,22.68,41.52,8.20],["Speed Broadband",106,26.42,24.98,20.28],["Tapish Broadband (Badli)",94,22.87,37.62,18.62],["Gaurav Cable Network",171,60.82,22.34,9.36],["MD Technologys",334,37.57,26.65,23.80],["THREE STAR VISION",90,19.44,16.03,20.00],["Akshay Communications",74,8.11,15.54,16.89],["Pulse Internet Services",285,18.77,9.43,14.39],["Nextia Solutions",88,33.52,19.80,20.45]];
 
 const W=960,H=400,L=44,T=40,B=46,R=20,iw=W-L-R,ih=H-T-B,yMax=55;
 const NS="http://www.w3.org/2000/svg",el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
