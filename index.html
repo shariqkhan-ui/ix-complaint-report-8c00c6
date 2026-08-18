@@ -158,11 +158,11 @@ M.forEach((d,i)=>{const t=el("text",{x:x(i),y:H-B+20,"text-anchor":"middle",clas
 svg.appendChild(el("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"base"}));
 const pts=M.map((d,i)=>[x(i),y(d[1])]);
 svg.appendChild(el("path",{d:pts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:"var(--line)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
-M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:4.5,fill:"var(--line)",class:"dot"}));const lab=el("text",{x:x(i),y:y(d[1])-11,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--line)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
+M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:4.5,fill:"var(--line)",class:"dot"}));if(i===5||i===6)return;const lab=el("text",{x:x(i),y:y(d[1])-11,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--line)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
 // raw (outages included) — dashed, labels below points to avoid collisions where the lines converge
 const rpts=RAW_M.map((d,i)=>[x(i),y(d[1])]);
 svg.appendChild(el("path",{d:rpts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:"var(--warn)","stroke-width":2,"stroke-dasharray":"6 5","stroke-linejoin":"round","stroke-linecap":"round"}));
-RAW_M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:3.5,fill:"var(--warn)",class:"dot"}));const lab=el("text",{x:x(i),y:y(d[1])+18,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--warn)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
+RAW_M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:3.5,fill:"var(--warn)",class:"dot"}));if(i===5||i===6)return;const lab=el("text",{x:x(i),y:y(d[1])+18,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--warn)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
 
 const cb=document.getElementById("csptbody");
 CSP.sort((a,b)=>(a[4]-a[2])-(b[4]-b[2]));
