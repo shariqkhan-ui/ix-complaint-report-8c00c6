@@ -46,7 +46,7 @@
 
 <div class="viz-root">
   <h1>IX 13 Partners — Complaint Ratio, <span style="color:var(--warn)">Outages Excluded</span></h1>
-  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>Outage-driven complaints removed. Lower is better.</strong> Pre = Apr–May · Post = Jan–Feb (earlier wave) · Now = Jun–Jul. <em>Updated 10 Aug 2026 with fresh data through July · Service-SLA section added 18 Aug 2026.</em></p>
+  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>Outage-driven complaints removed. Lower is better.</strong> Pre = Apr–May · Post = Jan–Feb (earlier wave) · Now = Jun–Jul. <em>Updated 10 Aug 2026 with fresh data through July · Service-SLA and raw (outages-included) sections added 18 Aug 2026.</em></p>
 
   <div class="tiles">
     <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Apr–May</div><div class="val">29.2<small>%</small></div><div class="foot">pre-upgrade baseline</div></div>
@@ -66,7 +66,7 @@
 
   <div class="card">
     <p class="ctitle">Complaint ratio — monthly, Nov 2025 → Jul 2026</p>
-    <p class="cnote">y = complaint ratio %. Lower = better. Two waves visible: the Jan wave steps the level down, drifts back Mar–May, then the Jun upgrade wave steps it down again — and holds.</p>
+    <p class="cnote"><span style="color:var(--line);font-weight:700">— solid = outages excluded</span> · <span style="color:var(--warn);font-weight:700">-- dashed = raw, outage tickets included</span>. Lower = better. The gap between the lines = outage-driven complaints; it widens in Jun–Jul as the upgrade wave itself threw off mass-outage tickets.</p>
     <svg id="chart" viewBox="0 0 960 400" role="img" aria-label="Monthly complaint ratio Nov to Jul"></svg>
   </div>
 
@@ -77,6 +77,16 @@
       <thead><tr><th>Partner</th><th>Users</th><th>Pre · Apr–May</th><th>Post · Jan–Feb</th><th>Now · Jun–Jul</th><th>Δ pp</th></tr></thead>
       <tbody id="csptbody"></tbody>
     </table></div>
+  </div>
+
+  <div class="card">
+    <p class="ctitle">CSP-wise — RAW Complaint Ratio %, outage tickets <span style="color:var(--warn)">INCLUDED</span></p>
+    <p class="cnote">All internet tickets ÷ users × 100, nothing removed — what the customer actually experienced. Raw overall: <strong>Pre 35.4 → Post 37.8 → Now 31.5</strong> (−11% vs Pre; the outage-excluded view above falls −43%). The difference: the upgrade cut steady-state complaints sharply, but mass-outage tickets — including outages during the upgrade work itself — kept the raw count elevated. Same colour rules as above; Δ = Now − Pre.</p>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>Partner</th><th>Users</th><th>Pre · Apr–May</th><th>Post · Jan–Feb</th><th>Now · Jun–Jul</th><th>Δ pp</th></tr></thead>
+      <tbody id="rawtbody"></tbody>
+    </table></div>
+    <p class="cnote" style="margin-top:8px"><strong>MD Technologys is the raw-view standout problem: 49.0 → 62.1</strong> — its Jun–Jul tickets (415) are dominated by mass-outage events that the excluded view removes. Gaurav shows the opposite: raw 74.3 → 12.9, a genuine collapse in complaints.</p>
   </div>
 
   <div class="card">
@@ -124,15 +134,18 @@
     </div>
   </div>
 
-  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. <strong>Tiny outages (≤3 devices down) are NOT excluded</strong> — only mass outages (&gt;3 devices) count, so complaints during small 1–3 device blips stay in the ratio. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08. <strong>Service SLA</strong> = tickets with RESOLUTION_TAT_BUCKET = 'within TAT' ÷ all internet-related tickets (same title filter, same 13 LCO accounts), by ticket-added month. Outage-window tickets are NOT excluded from SLA — resolution speed is measured on everything raised. Denominator includes open tickets (all windows ≥18 days matured, so negligible). SLA data pulled 2026-08-18.</p>
+  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. <strong>Tiny outages (≤3 devices down) are NOT excluded</strong> — only mass outages (&gt;3 devices) count, so complaints during small 1–3 device blips stay in the ratio. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08. <strong>Service SLA</strong> = tickets with RESOLUTION_TAT_BUCKET = 'within TAT' ÷ all internet-related tickets (same title filter, same 13 LCO accounts), by ticket-added month. Outage-window tickets are NOT excluded from SLA — resolution speed is measured on everything raised. Denominator includes open tickets (all windows ≥18 days matured, so negligible). <strong>Raw complaint ratio</strong> = ALL internet tickets ÷ users × 100 with no outage removal, window = mean of its two monthly ratios — directly comparable to the outage-excluded ratio above; the difference between the two is the outage-driven complaint load. SLA and raw data pulled 2026-08-18.</p>
 </div>
 
 <script>
 const M=[["Nov",48.54],["Dec",44.30],["Jan",32.96],["Feb",18.63],["Mar",23.11],["Apr",31.49],["May",27.01],["Jun",16.18],["Jul",17.11]];
+const RAW_M=[["Nov",58.67],["Dec",53.90],["Jan",43.66],["Feb",31.84],["Mar",29.04],["Apr",32.13],["May",38.71],["Jun",31.61],["Jul",31.37]];
+// RAWC: [name, users, rawPre, rawPost, rawNow] — all internet tickets ÷ users × 100, outages included
+const RAWC=[["K.H. Broadband",44,2.27,54.55,9.09],["Durga cable network",56,31.25,45.54,33.93],["Aman Broadband Services",105,30.48,54.76,30.95],["Ajay Broadband",88,34.66,41.48,24.43],["Sameer Alam",183,24.32,57.10,9.84],["Speed Broadband",106,28.77,33.49,22.17],["Tapish Broadband (Badli)",94,23.40,46.81,34.57],["Gaurav Cable Network",171,74.27,38.60,12.87],["MD Technologys",334,48.95,43.26,62.13],["THREE STAR VISION",90,21.11,21.67,36.11],["Akshay Communications",74,8.78,24.32,18.24],["Pulse Internet Services",285,29.30,16.67,29.82],["Nextia Solutions",88,35.23,28.98,33.52]];
 const BANDS=[["Post",2,3,"var(--line)"],["Pre",5,6,"#8b7fc7"],["Now",7,8,"var(--good)"]];
 const CSP=[["K.H. Broadband",44,2.27,46.07,4.55],["Durga cable network",56,29.46,38.56,16.96],["Aman Broadband Services",105,27.62,42.49,18.10],["Ajay Broadband",88,32.95,24.29,18.75],["Sameer Alam",183,22.68,41.52,8.20],["Speed Broadband",106,26.42,24.98,20.28],["Tapish Broadband (Badli)",94,22.87,37.62,18.62],["Gaurav Cable Network",171,60.82,22.34,9.36],["MD Technologys",334,37.57,26.65,23.80],["THREE STAR VISION",90,19.44,16.03,20.00],["Akshay Communications",74,8.11,15.54,16.89],["Pulse Internet Services",285,18.77,9.43,14.39],["Nextia Solutions",88,33.52,19.80,20.45]];
 
-const W=960,H=400,L=44,T=40,B=46,R=20,iw=W-L-R,ih=H-T-B,yMax=55;
+const W=960,H=400,L=44,T=40,B=46,R=20,iw=W-L-R,ih=H-T-B,yMax=65;
 const NS="http://www.w3.org/2000/svg",el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
 const svg=document.getElementById("chart"),x=i=>L+iw*i/(M.length-1),y=v=>T+ih*(1-v/yMax);
 // period bands
@@ -146,6 +159,10 @@ svg.appendChild(el("line",{x1:L,x2:W-R,y1:y(0),y2:y(0),class:"base"}));
 const pts=M.map((d,i)=>[x(i),y(d[1])]);
 svg.appendChild(el("path",{d:pts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:"var(--line)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
 M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:4.5,fill:"var(--line)",class:"dot"}));const lab=el("text",{x:x(i),y:y(d[1])-11,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--line)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
+// raw (outages included) — dashed, labels below points to avoid collisions where the lines converge
+const rpts=RAW_M.map((d,i)=>[x(i),y(d[1])]);
+svg.appendChild(el("path",{d:rpts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:"var(--warn)","stroke-width":2,"stroke-dasharray":"6 5","stroke-linejoin":"round","stroke-linecap":"round"}));
+RAW_M.forEach((d,i)=>{svg.appendChild(el("circle",{cx:x(i),cy:y(d[1]),r:3.5,fill:"var(--warn)",class:"dot"}));const lab=el("text",{x:x(i),y:y(d[1])+18,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--warn)");lab.textContent=d[1].toFixed(1);svg.appendChild(lab);});
 
 const cb=document.getElementById("csptbody");
 CSP.sort((a,b)=>(a[4]-a[2])-(b[4]-b[2]));
@@ -154,6 +171,15 @@ CSP.forEach(r=>{const [n,u,pr,po,nw]=r;const dl=+(nw-pr).toFixed(2);const cls=nw
 const aU=CSP.reduce((s,r)=>s+r[1],0);
 const aPre=CSP.reduce((s,r)=>s+r[2]*r[1],0)/aU,aPost=CSP.reduce((s,r)=>s+r[3]*r[1],0)/aU,aNow=CSP.reduce((s,r)=>s+r[4]*r[1],0)/aU,aDl=aNow-aPre;
 cb.insertAdjacentHTML("beforeend",`<tr style="border-top:2px solid var(--baseline);font-weight:700;background:color-mix(in srgb,var(--line) 6%,transparent)"><td>Overall (userbase-weighted)</td><td style="color:var(--muted)">${aU}</td><td>${aPre.toFixed(2)}</td><td>${aPost.toFixed(2)}</td><td>${aNow.toFixed(2)}</td><td style="color:${aDl<0?'var(--good)':'var(--bad)'}">${aDl>0?'+':''}${aDl.toFixed(2)}</td></tr>`);
+
+// ── Raw complaint ratio (outages included) ───────────────────
+const rb=document.getElementById("rawtbody");
+RAWC.sort((a,b)=>(a[4]-a[2])-(b[4]-b[2]));
+RAWC.forEach(r=>{const [n,u,pr,po,nw]=r;const dl=+(nw-pr).toFixed(2);const cls=nw<pr-0.05?"up":(nw>pr+0.05?"dn":"");
+  rb.insertAdjacentHTML("beforeend",`<tr><td>${n}</td><td style="color:var(--muted)">${u}</td><td>${pr.toFixed(2)}</td><td>${po.toFixed(2)}</td><td class="now ${cls}">${nw.toFixed(2)}</td><td style="color:${dl<0?'var(--good)':'var(--bad)'};font-weight:600">${dl>0?'+':''}${dl.toFixed(2)}</td></tr>`);});
+const rU=RAWC.reduce((s,r)=>s+r[1],0);
+const rPre=RAWC.reduce((s,r)=>s+r[2]*r[1],0)/rU,rPost=RAWC.reduce((s,r)=>s+r[3]*r[1],0)/rU,rNow=RAWC.reduce((s,r)=>s+r[4]*r[1],0)/rU,rDl=rNow-rPre;
+rb.insertAdjacentHTML("beforeend",`<tr style="border-top:2px solid var(--baseline);font-weight:700;background:color-mix(in srgb,var(--warn) 6%,transparent)"><td>Overall (userbase-weighted)</td><td style="color:var(--muted)">${rU}</td><td>${rPre.toFixed(2)}</td><td>${rPost.toFixed(2)}</td><td>${rNow.toFixed(2)}</td><td style="color:${rDl<0?'var(--good)':'var(--bad)'}">${rDl>0?'+':''}${rDl.toFixed(2)}</td></tr>`);
 
 // ── Service SLA section ──────────────────────────────────────
 // SLA_M: [month, sla%] · SLA: [name, ticketsJunJul, pre%, post%, now%, jul%]
