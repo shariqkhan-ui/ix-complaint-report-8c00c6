@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IX Service SLA Scorecard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F6F8F7; --surface:#FFFFFF; --ink:#182420; --muted:#5D6E68;
+  --line:#DFE6E3; --accent:#0E7C66; --good:#0E7C66; --good-bg:#E2F1EC;
+  --bad:#B3372B; --bad-bg:#F7E6E2; --pend:#A97A2F; --pend-bg:#F5EDDE;
+  --hdr:#182420; --hdr-ink:#F2F6F4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1513; --surface:#171F1C; --ink:#E9F0ED; --muted:#93A49E;
+    --line:#28332F; --accent:#3FAE93; --good:#3FAE93; --good-bg:#15302A;
+    --bad:#E08573; --bad-bg:#36201B; --pend:#D2A35C; --pend-bg:#31281A;
+    --hdr:#0B100E; --hdr-ink:#DCE6E2;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1513; --surface:#171F1C; --ink:#E9F0ED; --muted:#93A49E;
+  --line:#28332F; --accent:#3FAE93; --good:#3FAE93; --good-bg:#15302A;
+  --bad:#E08573; --bad-bg:#36201B; --pend:#D2A35C; --pend-bg:#31281A;
+  --hdr:#0B100E; --hdr-ink:#DCE6E2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding:36px 20px 56px}
+.eyebrow{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+h1{font-family:Archivo,system-ui,sans-serif;font-weight:700;font-size:27px;letter-spacing:-.015em;margin:0 0 6px;text-wrap:balance}
+.def{color:var(--muted);font-size:13px;max-width:64ch;margin:0 0 22px}
+.def strong{color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:640px){.tiles{grid-template-columns:1fr}}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.tile .lab{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tile .val{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:4px}
+.tile .val small{font-size:13px;font-weight:500;color:var(--muted)}
+.tile .sub{font-size:12px;color:var(--muted);margin-top:2px}
+.up{color:var(--good)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 0 0;overflow:hidden}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:13px}
+thead th{background:var(--hdr);color:var(--hdr-ink);font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;text-align:right;white-space:nowrap}
+thead th:nth-child(1),thead th:nth-child(2),thead th:nth-child(3){text-align:left}
+td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+td:nth-child(1){color:var(--muted);width:30px}
+td:nth-child(2){text-align:left;font-weight:500}
+td:nth-child(3){text-align:left}
+tr:last-child td{border-bottom:none}
+.mo{color:var(--muted);font-size:11.5px}
+.chip{display:inline-block;font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.chip.dash{border-color:var(--accent);color:var(--accent)}
+.delta{display:inline-block;min-width:58px;text-align:center;font-weight:600;padding:2px 8px;border-radius:6px}
+.delta.pos{background:var(--good-bg);color:var(--good)}
+.delta.neg{background:var(--bad-bg);color:var(--bad)}
+.delta.pen{background:var(--pend-bg);color:var(--pend);font-weight:500}
+.small{font-size:11.5px;color:var(--muted)}
+tr.total td{background:color-mix(in srgb,var(--accent) 7%,transparent);font-weight:600;border-top:2px solid var(--line)}
+.note{font-size:12px;color:var(--muted);line-height:1.65;margin-top:18px;max-width:76ch}
+.note strong{color:var(--ink)}
+</style></head><body>
+
+<div class="wrap">
+  <p class="eyebrow">IX Network Upgrade Program Â· 18 Aug 2026</p>
+  <h1>Service SLA, before and after upgrade â€” CSP level</h1>
+  <p class="def">SLA = share of internet complaints resolved within <strong>4 working hours (11amâ€“9pm IST)</strong>, computed from raw ticket timestamps. Each CSP is measured on its own windows: <strong>Pre = the month before its upgrade started Â· Post = the month after it completed.</strong> Outage-period tickets included. 24 CSPs across two waves.</p>
+
+  <div class="tiles">
+    <div class="tile"><div class="lab">Pre-upgrade</div><div class="val">66.8<small>% avg</small></div><div class="sub">median 72.7% Â· 1,525 tickets</div></div>
+    <div class="tile" style="border-color:var(--accent)"><div class="lab" style="color:var(--accent)">Post-upgrade</div><div class="val up">75.6<small>% avg</small></div><div class="sub"><span class="up">â–² +8.8 pp</span> Â· median 79.6% (+6.9)</div></div>
+    <div class="tile"><div class="lab">CSPs improved</div><div class="val">14<small> of 22</small></div><div class="sub">2 pending September post-month</div></div>
+  </div>
+
+  <div class="card"><div class="tblwrap">
+    <table>
+      <thead><tr><th>#</th><th>CSP</th><th>Wave</th><th>Pre SLA</th><th>Post SLA</th><th>Î” pp</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Akshay Communications</td><td><span class="chip">Sprint</span></td><td>43.8 <span class="mo">Nov</span></td><td>95.0 <span class="mo">Jan</span></td><td><span class="delta pos">+51.2</span></td></tr>
+        <tr><td>2</td><td>Ajay Broadband</td><td><span class="chip">Sprint</span></td><td>45.5 <span class="mo">Nov</span></td><td>88.9 <span class="mo">Jan</span></td><td><span class="delta pos">+43.4</span></td></tr>
+        <tr><td>3</td><td>SS Khan Network</td><td><span class="chip dash">Dashboard</span></td><td>41.2 <span class="mo">May</span></td><td>83.3 <span class="mo">Jul</span></td><td><span class="delta pos">+42.1</span></td></tr>
+        <tr><td>4</td><td>Bachchu Cable Network</td><td><span class="chip">Sprint</span></td><td>25.0 <span class="mo">NovÂ·4 tkts</span></td><td>62.5 <span class="mo">Jan</span></td><td><span class="delta pos">+37.5</span></td></tr>
+        <tr><td>5</td><td>JSK Enterprises</td><td><span class="chip dash">Dashboard</span></td><td>52.5 <span class="mo">May</span></td><td>78.5 <span class="mo">Jul</span></td><td><span class="delta pos">+26.0</span></td></tr>
+        <tr><td>6</td><td>Nextia Solutions</td><td><span class="chip">Sprint</span></td><td>80.0 <span class="mo">Nov</span></td><td>96.3 <span class="mo">Jan</span></td><td><span class="delta pos">+16.3</span></td></tr>
+        <tr><td>7</td><td>Gaurav Cable Network</td><td><span class="chip">Sprint</span></td><td>50.0 <span class="mo">Nov</span></td><td>65.7 <span class="mo">Jan</span></td><td><span class="delta pos">+15.7</span></td></tr>
+        <tr><td>8</td><td>Real Broadband</td><td><span class="chip">Sprint</span></td><td>67.9 <span class="mo">Nov</span></td><td>80.6 <span class="mo">Jan</span></td><td><span class="delta pos">+12.7</span></td></tr>
+        <tr><td>9</td><td>Pulse Internet Services</td><td><span class="chip">Sprint</span></td><td>80.0 <span class="mo">Nov</span></td><td>88.5 <span class="mo">Jan</span></td><td><span class="delta pos">+8.5</span></td></tr>
+        <tr><td>10</td><td>Amit cable net WiFi</td><td><span class="chip">Sprint</span></td><td>80.8 <span class="mo">Nov</span></td><td>85.0 <span class="mo">Jan</span></td><td><span class="delta pos">+4.2</span></td></tr>
+        <tr><td>11</td><td>Jay Durga Net</td><td><span class="chip dash">Dashboard</span></td><td>84.2 <span class="mo">May</span></td><td>87.0 <span class="mo">Jul</span></td><td><span class="delta pos">+2.8</span></td></tr>
+        <tr><td>12</td><td>Hirday Broadband</td><td><span class="chip dash">Dashboard</span></td><td>70.0 <span class="mo">May</span></td><td>72.7 <span class="mo">Jul</span></td><td><span class="delta pos">+2.7</span></td></tr>
+        <tr><td>13</td><td>MD Technologys</td><td><span class="chip">Sprint</span></td><td>76.5 <span class="mo">Nov</span></td><td>77.8 <span class="mo">Jan</span></td><td><span class="delta pos">+1.3</span></td></tr>
+        <tr><td>14</td><td>Om Sai Traders</td><td><span class="chip dash">Dashboard</span></td><td>88.5 <span class="mo">Jun</span></td><td>89.7 <span class="mo">Aug*</span></td><td><span class="delta pos">+1.2</span></td></tr>
+        <tr><td>15</td><td>Durga cable network</td><td><span class="chip">Sprint</span></td><td>83.0 <span class="mo">Nov</span></td><td>82.1 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’0.9</span></td></tr>
+        <tr><td>16</td><td>Speed Broadband</td><td><span class="chip">Sprint</span></td><td>71.1 <span class="mo">Nov</span></td><td>70.2 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’0.9</span></td></tr>
+        <tr><td>17</td><td>Tapish Broadband (Badli)</td><td><span class="chip">Sprint</span></td><td>100.0 <span class="mo">Nov</span></td><td>94.0 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’6.0</span></td></tr>
+        <tr><td>18</td><td>THREE STAR VISION</td><td><span class="chip">Sprint</span></td><td>70.6 <span class="mo">Nov</span></td><td>60.0 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’10.6</span></td></tr>
+        <tr><td>19</td><td>Sameer Alam</td><td><span class="chip">Sprint</span></td><td>79.6 <span class="mo">Nov</span></td><td>68.5 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’11.1</span></td></tr>
+        <tr><td>20</td><td>Aman Broadband Services</td><td><span class="chip">Sprint</span></td><td>73.0 <span class="mo">Nov</span></td><td>54.1 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’18.9</span></td></tr>
+        <tr><td>21</td><td>Jaimata broadband</td><td><span class="chip dash">Dashboard</span></td><td>100.0 <span class="mo">MayÂ·6 tkts</span></td><td>77.8 <span class="mo">JulÂ·9 tkts</span></td><td><span class="delta neg">âˆ’22.2</span></td></tr>
+        <tr><td>22</td><td>K.H. Broadband</td><td><span class="chip">Sprint</span></td><td>72.4 <span class="mo">Nov</span></td><td>25.8 <span class="mo">Jan</span></td><td><span class="delta neg">âˆ’46.6</span></td></tr>
+        <tr><td>23</td><td>Win Broadband Service</td><td><span class="chip dash">Dashboard</span></td><td>72.0 <span class="mo">Jun</span></td><td class="small">post = Sep Â· early Aug 80.7</td><td><span class="delta pen">pending</span></td></tr>
+        <tr><td>24</td><td>Hans Cable Network</td><td><span class="chip dash">Dashboard</span></td><td>58.4 <span class="mo">Jun</span></td><td class="small">post = Sep Â· early Aug 91.7</td><td><span class="delta pen">pending</span></td></tr>
+        <tr class="total"><td></td><td>Overall â€” 22 CSPs with post</td><td></td><td>66.8</td><td>75.6</td><td><span class="delta pos">+8.8</span></td></tr>
+      </tbody>
+    </table>
+  </div></div>
+
+  <p class="note"><strong>Method.</strong> Internet complaints from SERVICE_TICKET_MODEL (titles starting "Internet"), timestamps converted UTCâ†’IST; SLA clock runs 11:00â€“21:00 only, so a night-raised ticket starts counting at 11am. Denominator = all tickets raised in the month (open tickets count as missed); outage-window tickets are not excluded. Sprint wave = Decâ€“Jan hardware sprints (16 CSPs, Pre Nov 2025 / Post Jan 2026). Dashboard wave = audit-tool upgrades (8 CSPs, per-CSP months from start/completion dates; 7/8-task CSPs counted completed). Aug* = through 18 Aug. Small ticket bases (â‰¤10) flagged inline â€” treat as noise. Win, Hans, plus the second-round upgrades at MD and Real, mature in September. Watch-list: K.H. (âˆ’46.6), Aman (âˆ’18.9), Sameer (âˆ’11.1), and Bachchu â€” improved in January but resolving ~0% within 4h since July.</p>
+</div>
+
+</body></html>
