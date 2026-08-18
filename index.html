@@ -46,7 +46,7 @@
 
 <div class="viz-root">
   <h1>IX 13 Partners — Complaint Ratio, <span style="color:var(--warn)">Outages Excluded</span></h1>
-  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>Outage-driven complaints removed. Lower is better.</strong> Pre = Apr–May · Post = Jan–Feb (earlier wave) · Now = Jun–Jul. <em>Updated 10 Aug 2026 with fresh data through July.</em></p>
+  <p class="sub">Monthly internet-complaint ratio ÷ 1,718 customers × 100, tickets during a network outage removed (<strong>outage = incidents table DEVICE_COUNT &gt; 3, windows capped at 4h</strong> to drop never-closed artifact incidents; <strong>tiny ≤3-device outages are NOT excluded</strong>). Each CSP's own outage rate applies; uncovered months (Nov, Dec, Jan 1–7) use that CSP's covered proportion. <strong>Outage-driven complaints removed. Lower is better.</strong> Pre = Apr–May · Post = Jan–Feb (earlier wave) · Now = Jun–Jul. <em>Updated 10 Aug 2026 with fresh data through July · Service-SLA section added 18 Aug 2026.</em></p>
 
   <div class="tiles">
     <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Apr–May</div><div class="val">29.2<small>%</small></div><div class="foot">pre-upgrade baseline</div></div>
@@ -80,6 +80,24 @@
   </div>
 
   <div class="card">
+    <p class="ctitle">Service SLA — % of internet tickets resolved within TAT · <span style="color:var(--good)">higher is better</span></p>
+    <p class="cnote">Same 13 CSPs, same internet-ticket base (no outage exclusion — SLA measures resolution speed, not complaint volume). SLA = tickets with resolution TAT bucket "within TAT" ÷ all internet tickets raised that month.</p>
+    <div class="tiles" style="margin-bottom:14px">
+      <div class="tile" style="border-left:3px solid #8b7fc7"><div class="lab">Pre — Apr–May</div><div class="val">90.2<small>%</small></div><div class="foot">1,098 / 1,217 tickets</div></div>
+      <div class="tile" style="border-left:3px solid var(--warn)"><div class="lab">Now — Jun–Jul</div><div class="val" style="color:var(--warn)">82.4<small>%</small></div><div class="foot">dragged down by June</div></div>
+      <div class="tile" style="border-left:3px solid var(--bad)"><div class="lab">Jun — upgrade month</div><div class="val" style="color:var(--bad)">73.7<small>%</small></div><div class="foot">execution-month dip</div></div>
+      <div class="tile" style="border-left:3px solid var(--good)"><div class="lab">Jul — recovered</div><div class="val" style="color:var(--good)">91.3<small>%</small></div><div class="foot good">▲ above Pre baseline</div></div>
+    </div>
+    <svg id="slachart" viewBox="0 0 960 300" role="img" aria-label="Monthly service SLA Nov to Jul"></svg>
+    <p class="cnote" style="margin-top:10px">SLA ran a steady 88–92% for eight of nine months — the upgrade didn't structurally change resolution speed. The one break is <strong>June (73.7%)</strong>: the upgrade-execution month, when field capacity went to the rebuild and open tickets aged past TAT. <strong>July snapped back to 91.3%, the best month since March.</strong></p>
+    <div style="overflow-x:auto;margin-top:8px"><table>
+      <thead><tr><th>Partner</th><th>Tickets · Jun–Jul</th><th>Pre · Apr–May</th><th>Post · Jan–Feb</th><th>Now · Jun–Jul</th><th>Jul only</th><th>Δ pp · Jul−Pre</th></tr></thead>
+      <tbody id="slatbody"></tbody>
+    </table></div>
+    <p class="cnote" style="margin-top:8px">Jul coloured green = at/above that CSP's Pre SLA, red = below. Sorted by Jul−Pre. <strong>Durga is the outlier — no July recovery (68.4%)</strong>; Gaurav and K.H. July reads sit on tiny ticket counts (9 and 4).</p>
+  </div>
+
+  <div class="card">
     <p class="ctitle">Cohorts — Supportive vs Non-supportive (Post · Jan–Feb)</p>
     <p class="cnote">Complaint ratio %, outages excluded. Cohort labels per ops; Gaurav &amp; Tapish unassigned.</p>
     <div style="overflow-x:auto"><table>
@@ -106,7 +124,7 @@
     </div>
   </div>
 
-  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. <strong>Tiny outages (≤3 devices down) are NOT excluded</strong> — only mass outages (&gt;3 devices) count, so complaints during small 1–3 device blips stay in the ratio. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08.</p>
+  <p class="note"><strong>Method.</strong> Base = internet-related tickets (SERVICE_TICKET_MODEL by LCO_ACCOUNT_ID). A ticket is "outage" if its IST time falls in a confirmed &gt;3-device incident window (INCIDENTS, FIRST_FAIL → min(CLOSED_AT, FIRST_FAIL+4h)) — the 4h cap drops ~3,760 never-closed multi-week "incidents" (dead devices) that otherwise delete 95% of tickets. <strong>Tiny outages (≤3 devices down) are NOT excluded</strong> — only mass outages (&gt;3 devices) count, so complaints during small 1–3 device blips stay in the ratio. Outage data starts 2026-01-08; Nov, Dec, Jan 1–7 use each CSP's own covered-months removal rate. Across covered months 18.7% of complaints are removed as outage-driven. Ratio = non-outage tickets ÷ 1,718 × 100; each period = mean of its two monthly ratios. K.H. Pre is a small-base outlier (44 users, Nov ticket flood). Pulled 2026-07-08. <strong>Service SLA</strong> = tickets with RESOLUTION_TAT_BUCKET = 'within TAT' ÷ all internet-related tickets (same title filter, same 13 LCO accounts), by ticket-added month. Outage-window tickets are NOT excluded from SLA — resolution speed is measured on everything raised. Denominator includes open tickets (all windows ≥18 days matured, so negligible). SLA data pulled 2026-08-18.</p>
 </div>
 
 <script>
@@ -136,6 +154,34 @@ CSP.forEach(r=>{const [n,u,pr,po,nw]=r;const dl=+(nw-pr).toFixed(2);const cls=nw
 const aU=CSP.reduce((s,r)=>s+r[1],0);
 const aPre=CSP.reduce((s,r)=>s+r[2]*r[1],0)/aU,aPost=CSP.reduce((s,r)=>s+r[3]*r[1],0)/aU,aNow=CSP.reduce((s,r)=>s+r[4]*r[1],0)/aU,aDl=aNow-aPre;
 cb.insertAdjacentHTML("beforeend",`<tr style="border-top:2px solid var(--baseline);font-weight:700;background:color-mix(in srgb,var(--line) 6%,transparent)"><td>Overall (userbase-weighted)</td><td style="color:var(--muted)">${aU}</td><td>${aPre.toFixed(2)}</td><td>${aPost.toFixed(2)}</td><td>${aNow.toFixed(2)}</td><td style="color:${aDl<0?'var(--good)':'var(--bad)'}">${aDl>0?'+':''}${aDl.toFixed(2)}</td></tr>`);
+
+// ── Service SLA section ──────────────────────────────────────
+// SLA_M: [month, sla%] · SLA: [name, ticketsJunJul, pre%, post%, now%, jul%]
+const SLA_M=[["Nov",87.7],["Dec",88.0],["Jan",88.7],["Feb",91.4],["Mar",92.4],["Apr",89.7],["May",90.7],["Jun",73.7],["Jul",91.3]];
+const SLA=[["K.H. Broadband",8,100.0,93.8,87.5,75.0],["Durga cable network",38,91.4,96.1,68.4,68.4],["Aman Broadband Services",65,92.2,84.3,87.7,93.9],["Ajay Broadband",43,85.2,86.3,81.4,87.5],["Sameer Alam",36,95.5,90.0,88.9,92.9],["Speed Broadband",47,90.2,93.0,89.4,92.0],["Tapish Broadband (Badli)",65,86.4,88.6,84.6,92.1],["Gaurav Cable Network",44,92.9,90.2,72.7,77.8],["MD Technologys",415,93.0,91.3,83.9,93.5],["THREE STAR VISION",65,86.8,82.1,76.9,96.9],["Akshay Communications",27,84.6,91.7,92.6,100.0],["Pulse Internet Services",170,80.2,86.3,80.0,89.0],["Nextia Solutions",59,91.9,96.1,79.7,92.9]];
+const SLA_OVR=[1082,90.2,89.8,82.4,91.3]; // [ticketsNow, pre, post, now, jul]
+
+(function(){
+  const sW=960,sH=300,sL=44,sT=40,sB=46,sR=20,siw=sW-sL-sR,sih=sH-sT-sB,yMin=60,ySMax=100;
+  const ssvg=document.getElementById("slachart"),sx=i=>sL+siw*i/(SLA_M.length-1),sy=v=>sT+sih*(1-(v-yMin)/(ySMax-yMin));
+  BANDS.forEach(([lab,a,b,c])=>{const x0=sx(a)-siw/(SLA_M.length-1)/2, x1=sx(b)+siw/(SLA_M.length-1)/2;
+    ssvg.appendChild(el("rect",{x:x0,y:sT,width:x1-x0,height:sih,fill:c,opacity:0.10}));
+    const t=el("text",{x:(x0+x1)/2,y:sT-12,"text-anchor":"middle",class:"band"});t.setAttribute("fill",c);t.textContent=lab;ssvg.appendChild(t);});
+  for(let v=yMin;v<=ySMax;v+=10){ssvg.appendChild(el("line",{x1:sL,x2:sW-sR,y1:sy(v),y2:sy(v),class:"gl"}));const t=el("text",{x:sL-7,y:sy(v)+3,"text-anchor":"end",class:"tick"});t.textContent=v;ssvg.appendChild(t);}
+  const sbt=el("text",{x:sL-7,y:sy(yMin)+18,"text-anchor":"end",class:"tick"});sbt.textContent="better ↑";sbt.setAttribute("fill","var(--good)");ssvg.appendChild(sbt);
+  SLA_M.forEach((d,i)=>{const t=el("text",{x:sx(i),y:sH-sB+20,"text-anchor":"middle",class:"tick"});t.textContent=d[0];ssvg.appendChild(t);});
+  ssvg.appendChild(el("line",{x1:sL,x2:sW-sR,y1:sy(yMin),y2:sy(yMin),class:"base"}));
+  const spts=SLA_M.map((d,i)=>[sx(i),sy(d[1])]);
+  ssvg.appendChild(el("path",{d:spts.map((p,i)=>(i?"L":"M")+p[0]+","+p[1]).join(" "),fill:"none",stroke:"var(--good)","stroke-width":2.5,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  SLA_M.forEach((d,i)=>{ssvg.appendChild(el("circle",{cx:sx(i),cy:sy(d[1]),r:4.5,fill:"var(--good)",class:"dot"}));const lab=el("text",{x:sx(i),y:sy(d[1])-11,"text-anchor":"middle",class:"plab"});lab.setAttribute("fill","var(--good)");lab.textContent=d[1].toFixed(1);ssvg.appendChild(lab);});
+
+  const sb=document.getElementById("slatbody");
+  SLA.sort((a,b)=>(b[5]-b[2])-(a[5]-a[2]));
+  SLA.forEach(r=>{const [n,u,pr,po,nw,jl]=r;const dl=+(jl-pr).toFixed(1);const cls=jl>=pr-0.05?"up":"dn";
+    sb.insertAdjacentHTML("beforeend",`<tr><td>${n}</td><td style="color:var(--muted)">${u}</td><td>${pr.toFixed(1)}</td><td>${po.toFixed(1)}</td><td>${nw.toFixed(1)}</td><td class="now ${cls}">${jl.toFixed(1)}</td><td style="color:${dl>=0?'var(--good)':'var(--bad)'};font-weight:600">${dl>0?'+':''}${dl.toFixed(1)}</td></tr>`);});
+  const [oU,oPre,oPost,oNow,oJul]=SLA_OVR,oDl=+(oJul-oPre).toFixed(1);
+  sb.insertAdjacentHTML("beforeend",`<tr style="border-top:2px solid var(--baseline);font-weight:700;background:color-mix(in srgb,var(--good) 6%,transparent)"><td>Overall (ticket-weighted)</td><td style="color:var(--muted)">${oU}</td><td>${oPre.toFixed(1)}</td><td>${oPost.toFixed(1)}</td><td>${oNow.toFixed(1)}</td><td>${oJul.toFixed(1)}</td><td style="color:${oDl>=0?'var(--good)':'var(--bad)'}">${oDl>0?'+':''}${oDl.toFixed(1)}</td></tr>`);
+})();
 </script>
 
 </body></html>
